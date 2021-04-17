@@ -3,20 +3,12 @@ import { Suspense, lazy } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Container from './components/Container';
 import AppBar from './components/AppBar';
-import routes from './routes';
+import { routes } from './routes';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 const HomePage = lazy(() =>
   import('./views/HomePage' /*webpackChunkName: "home-page" */),
-);
-const MovieDetailsPage = lazy(() =>
-  import(
-    './views/MovieDetailsPage' /*webpackChunkName: "movie-details-page" */
-  ),
-);
-const MoviesPage = lazy(() =>
-  import('./views/MoviesPage' /*webpackChunkName: "movies-page" */),
 );
 
 const App = () => {
@@ -37,9 +29,14 @@ const App = () => {
           }
         >
           <Switch>
-            <Route exact path={routes.home} component={HomePage} />
-            <Route path={routes.movieDetails} component={MovieDetailsPage} />
-            <Route path={routes.movies} component={MoviesPage} />
+            {routes.map(({ path, exact, component: Component }) => (
+              <Route
+                key={path}
+                path={path}
+                exact={exact}
+                component={Component}
+              />
+            ))}
             <Route component={HomePage}></Route>
           </Switch>
         </Suspense>

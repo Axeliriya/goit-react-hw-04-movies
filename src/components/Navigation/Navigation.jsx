@@ -1,8 +1,10 @@
 import { NavLink } from 'react-router-dom';
 import Container from '../Container';
-import routes from '../../routes';
+import { routes } from '../../routes';
 
 const Navigation = () => {
+  const home = routes.find(route => route.label === 'Home');
+  const movies = routes.find(route => route.label === 'Movies');
   return (
     <nav className="Navigation">
       <Container>
@@ -12,7 +14,7 @@ const Navigation = () => {
               className="NavLink"
               activeClassName="NavLink--active"
               exact
-              to={routes.home}
+              to={`${home.path}`}
             >
               Home
             </NavLink>
@@ -21,7 +23,7 @@ const Navigation = () => {
             <NavLink
               className="NavLink"
               activeClassName="NavLink--active"
-              to={routes.movies}
+              to={`${movies.path}`}
             >
               Movies
             </NavLink>

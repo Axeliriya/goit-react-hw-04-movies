@@ -1,33 +1,52 @@
 import { Component } from 'react';
-import apiService from '../components/services/api-service';
+import apiService from '../services/api-service';
 import MoviesList from '../components/MoviesList';
 import Loader from 'react-loader-spinner';
+import debounce from 'lodash.debounce';
 
 class MoviesPage extends Component {
-  state = { search: '', movies: [], loading: false, error: null };
+  state = {
+    search: '',
+    debouncedSearch: '',
+    movies: [],
+    loading: false,
+    error: null,
+  };
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.search !== this.state.search && this.state.search) {
+    const { debouncedSearch } = this.state;
+    if (prevState.debouncedSearch !== debouncedSearch && debouncedSearch) {
       this.fetchMovies();
     }
   }
 
   async fetchMovies() {
     this.setState({ loading: true });
-    const { search } = this.state;
+    const { debouncedSearch } = this.state;
+
     const { results } = await apiService
-      .getFetchSearchMovie(search)
+      .getFetchSearchMovie(debouncedSearch)
       .catch(error => this.setState({ error }))
       .finally(() => this.setState({ loading: false }));
+
     this.setState({ movies: results });
   }
 
+  handleDebounceSearch = debounce(value => {
+    this.setState({ debouncedSearch: value });
+  }, 300);
+
   handleChange = event => {
-    this.setState({ search: event.currentTarget.value });
+    const { value } = event.currentTarget;
+
+    this.setState({ search: value });
+
+    this.handleDebounceSearch(value);
   };
 
   render() {
     const { search, movies, loading } = this.state;
+
     return (
       <div className="Searchbar">
         <div className="SearchForm">
@@ -45,12 +64,15 @@ class MoviesPage extends Component {
             placeholder="Search movies"
           />
         </div>
-        <div className="PosSpinner">
-          {loading ? (
-            <Loader type="Oval" color="#999999" height={50} width={50} />
-          ) : (
-            <MoviesList movies={movies} />
-          )}
+
+        <div className="SearchQuery">
+          <div className="PosSpinner">
+            {loading ? (
+              <Loader type="Oval" color="#999999" height={50} width={50} />
+            ) : (
+              <MoviesList movies={movies} />
+            )}
+          </div>
         </div>
       </div>
     );

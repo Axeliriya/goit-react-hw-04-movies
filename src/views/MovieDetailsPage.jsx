@@ -1,10 +1,11 @@
 import { Component } from 'react';
-import { Route, Switch, Link } from 'react-router-dom';
-import apiService from '../components/services/api-service';
+import { Route, Switch } from 'react-router-dom';
+import apiService from '../services/api-service';
 import Cast from '../components/Cast';
 import Reviews from '../components/Reviews';
 import MovieCard from '../components/MovieCard';
-import routes from '../routes';
+import AdditionalInformation from '../components/AdditionalInformation';
+import { routes } from '../routes';
 
 class MovieDetailsPage extends Component {
   state = {
@@ -30,7 +31,10 @@ class MovieDetailsPage extends Component {
 
   handleGoBack = () => {
     const { location, history } = this.props;
-    history.push(location?.state?.from || routes.home);
+    const home = routes.find(route => route.label === 'Home');
+    history.push(
+      location?.state?.from?.state?.from || location?.state?.from || home.path,
+    );
   };
 
   render() {
@@ -58,20 +62,9 @@ class MovieDetailsPage extends Component {
           overview={overview}
           loading={loading}
         />
-        <div className="MovieDetails">
-          <div>
-            <h4>Additional information</h4>
 
-            <ul>
-              <li>
-                <Link to={`${this.props.match.url}/cast`}>Cast</Link>
-              </li>
-              <li>
-                <Link to={`${this.props.match.url}/reviews`}>Reviews</Link>
-              </li>
-            </ul>
-          </div>
-        </div>
+        <AdditionalInformation location={this.props} match={this.props} />
+
         <div className="MovieDetails">
           <Switch>
             <Route
