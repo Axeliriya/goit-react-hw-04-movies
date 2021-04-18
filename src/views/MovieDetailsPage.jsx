@@ -7,6 +7,7 @@ import MovieCard from '../components/MovieCard';
 import AdditionalInformation from '../components/AdditionalInformation';
 import ButtonGoBack from '../components/ButtonGoBack';
 import { routes } from '../routes';
+import PropTypes from 'prop-types';
 
 class MovieDetailsPage extends Component {
   state = {
@@ -81,5 +82,14 @@ class MovieDetailsPage extends Component {
     );
   }
 }
+
+MovieDetailsPage.propTypes = {
+  title: PropTypes.string,
+  poster_path: PropTypes.string,
+  overview: PropTypes.string,
+  genres: PropTypes.arrayOf(PropTypes.object),
+  loading: PropTypes.bool,
+  vote_average: PropTypes.number,
+};
 
 export default MovieDetailsPage;

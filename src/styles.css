@@ -338,6 +338,10 @@ img {
   justify-content: space-around;
 }
 
+.Cast_descr_label {
+  font-weight: 500;
+}
+
 .Rewiews_item {
   margin-bottom: 10px;
 }

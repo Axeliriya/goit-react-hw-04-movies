@@ -5,6 +5,7 @@ import { routes } from '../../routes';
 const Navigation = () => {
   const home = routes.find(route => route.label === 'Home');
   const movies = routes.find(route => route.label === 'Movies');
+
   return (
     <nav className="Navigation">
       <Container>

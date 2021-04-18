@@ -2,6 +2,7 @@ import { Component } from 'react';
 import MoviesList from '../components/MoviesList';
 import apiService from '../services/api-service';
 import Loader from 'react-loader-spinner';
+import PropTypes from 'prop-types';
 
 class HomePage extends Component {
   state = { movies: [], loading: false, error: null };
@@ -32,5 +33,11 @@ class HomePage extends Component {
     );
   }
 }
+
+HomePage.propTypes = {
+  movies: PropTypes.arrayOf(PropTypes.object),
+  loading: PropTypes.bool,
+  error: PropTypes.object,
+};
 
 export default HomePage;

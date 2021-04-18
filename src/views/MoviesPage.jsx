@@ -3,6 +3,7 @@ import apiService from '../services/api-service';
 import MoviesList from '../components/MoviesList';
 import Loader from 'react-loader-spinner';
 import debounce from 'lodash.debounce';
+import PropTypes from 'prop-types';
 
 class MoviesPage extends Component {
   state = {
@@ -45,7 +46,7 @@ class MoviesPage extends Component {
   };
 
   render() {
-    const { search, movies, loading } = this.state;
+    const { search, movies, loading, error } = this.state;
 
     return (
       <div className="Searchbar">
@@ -69,6 +70,8 @@ class MoviesPage extends Component {
           <div className="PosSpinner">
             {loading ? (
               <Loader type="Oval" color="#999999" height={50} width={50} />
+            ) : error ? (
+              <p>Server is not responding</p>
             ) : (
               <MoviesList movies={movies} />
             )}
@@ -78,5 +81,13 @@ class MoviesPage extends Component {
     );
   }
 }
+
+MoviesPage.propTypes = {
+  search: PropTypes.string,
+  debouncedSearch: PropTypes.string,
+  movies: PropTypes.arrayOf(PropTypes.object),
+  loading: PropTypes.bool,
+  error: PropTypes.object,
+};
 
 export default MoviesPage;

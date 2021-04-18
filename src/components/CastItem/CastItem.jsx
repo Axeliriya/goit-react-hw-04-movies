@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 const CastItem = ({ person }) => {
   const { name, character, profile_path } = person;
   return (
@@ -11,12 +13,24 @@ const CastItem = ({ person }) => {
         </div>
 
         <div className="Cast_descr">
-          <p>Name: {name}</p>
-          <p>Character: {character}</p>
+          <p>
+            <span className="Cast_descr_label">Name:</span> {name}
+          </p>
+          <p>
+            <span className="Cast_descr_label">Character:</span> {character}
+          </p>
         </div>
       </div>
     </li>
   );
+};
+
+CastItem.propTypes = {
+  person: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    poster_path: PropTypes.string,
+    character: PropTypes.string.isRequired,
+  }),
 };
 
 export default CastItem;

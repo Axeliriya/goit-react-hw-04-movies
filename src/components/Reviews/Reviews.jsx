@@ -2,6 +2,7 @@ import { Component } from 'react';
 import apiService from '../../services/api-service';
 import Review from '../Review';
 import Loader from 'react-loader-spinner';
+import PropTypes from 'prop-types';
 
 class Reviews extends Component {
   state = {
@@ -41,5 +42,14 @@ class Reviews extends Component {
     );
   }
 }
+
+Reviews.propTypes = {
+  reviews: PropTypes.arrayOf(PropTypes.object),
+  loading: PropTypes.bool,
+  error: PropTypes.object,
+  review: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+  }),
+};
 
 export default Reviews;

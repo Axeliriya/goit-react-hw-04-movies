@@ -2,6 +2,7 @@ import { Component } from 'react';
 import apiService from '../../services/api-service';
 import CastItem from '../CastItem';
 import Loader from 'react-loader-spinner';
+import PropTypes from 'prop-types';
 
 class Cast extends Component {
   state = {
@@ -33,11 +34,20 @@ class Cast extends Component {
             ))}
           </ul>
         ) : (
-          <div>We don't have any rewiews for this movie.</div>
+          <div>We have no data on the actors for this film.</div>
         )}
       </div>
     );
   }
 }
+
+Cast.propTypes = {
+  cast: PropTypes.arrayOf(PropTypes.object),
+  loading: PropTypes.bool,
+  error: PropTypes.object,
+  person: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+  }),
+};
 
 export default Cast;

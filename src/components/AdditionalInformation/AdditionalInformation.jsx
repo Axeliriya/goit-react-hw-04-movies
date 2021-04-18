@@ -1,4 +1,5 @@
 import { withRouter, NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 const AdditionalInformation = ({ location, match }) => {
   return (
@@ -37,6 +38,11 @@ const AdditionalInformation = ({ location, match }) => {
       </ul>
     </div>
   );
+};
+
+AdditionalInformation.propTypes = {
+  match: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
 };
 
 export default withRouter(AdditionalInformation);

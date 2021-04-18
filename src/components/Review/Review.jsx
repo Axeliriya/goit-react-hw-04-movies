@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 const Review = ({ review }) => {
   const { author, content } = review;
   return (
@@ -6,6 +8,13 @@ const Review = ({ review }) => {
       <p>{content}</p>
     </li>
   );
+};
+
+Review.propTypes = {
+  review: PropTypes.shape({
+    author: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
+  }),
 };
 
 export default Review;

@@ -6,6 +6,7 @@ import AppBar from './components/AppBar';
 import { routes } from './routes';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import PropTypes from 'prop-types';
 
 const HomePage = lazy(() =>
   import('./views/HomePage' /*webpackChunkName: "home-page" */),
@@ -43,6 +44,14 @@ const App = () => {
       </Container>
     </>
   );
+};
+
+App.propTypes = {
+  routes: PropTypes.shape({
+    path: PropTypes.string.isRequired,
+    exact: PropTypes.bool.isRequired,
+    Component: PropTypes.func.isRequired,
+  }),
 };
 
 export default App;

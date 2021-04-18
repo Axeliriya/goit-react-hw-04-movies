@@ -1,7 +1,10 @@
 import { NavLink, withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 const MoviesItem = ({ movie, location }) => {
   const { id, title, poster_path, vote_average, release_date } = movie;
+  const url = `https://image.tmdb.org/t/p/w500${poster_path}`;
+
   return (
     <li className="MovieItem">
       <NavLink
@@ -16,11 +19,7 @@ const MoviesItem = ({ movie, location }) => {
       >
         <div className="MovieItem_card">
           <div className="MovieItem_image">
-            <img
-              src={`https://image.tmdb.org/t/p/w500${poster_path}`}
-              width="60"
-              alt={title}
-            />
+            <img src={url} width="60" alt={title} />
           </div>
 
           <div className="MovieItem_descr">
@@ -32,6 +31,16 @@ const MoviesItem = ({ movie, location }) => {
       </NavLink>
     </li>
   );
+};
+
+MoviesItem.propTypes = {
+  movie: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    poster_path: PropTypes.string,
+    vote_average: PropTypes.number.isRequired,
+    release_date: PropTypes.string.isRequired,
+  }),
+  location: PropTypes.object.isRequired,
 };
 
 export default withRouter(MoviesItem);
