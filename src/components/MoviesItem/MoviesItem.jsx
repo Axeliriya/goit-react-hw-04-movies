@@ -15,12 +15,14 @@ const MoviesItem = ({ movie, location }) => {
         }}
       >
         <div className="MovieItem_card">
-          <img
-            className="MovieItem_image"
-            src={`https://image.tmdb.org/t/p/w500${poster_path}`}
-            width="60"
-            alt={title}
-          />
+          <div className="MovieItem_image">
+            <img
+              src={`https://image.tmdb.org/t/p/w500${poster_path}`}
+              width="60"
+              alt={title}
+            />
+          </div>
+
           <div className="MovieItem_descr">
             <h3>{title}</h3>
             <p>Vote: {vote_average}</p>

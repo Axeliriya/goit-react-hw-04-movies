@@ -5,6 +5,7 @@ import Cast from '../components/Cast';
 import Reviews from '../components/Reviews';
 import MovieCard from '../components/MovieCard';
 import AdditionalInformation from '../components/AdditionalInformation';
+import ButtonGoBack from '../components/ButtonGoBack';
 import { routes } from '../routes';
 
 class MovieDetailsPage extends Component {
@@ -50,10 +51,9 @@ class MovieDetailsPage extends Component {
     return (
       <>
         <div className="MovieDetails">
-          <button className="Button" type="button" onClick={this.handleGoBack}>
-            Go back
-          </button>
+          <ButtonGoBack onGoBack={this.handleGoBack} />
         </div>
+
         <MovieCard
           poster_path={poster_path}
           title={title}
