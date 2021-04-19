@@ -1,7 +1,7 @@
 import { NavLink, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-const MoviesItem = ({ movie, location }) => {
+const MoviesItem = ({ movie, location, search }) => {
   const { id, title, poster_path, vote_average, release_date } = movie;
   const url = `https://image.tmdb.org/t/p/w500${poster_path}`;
 
@@ -14,6 +14,7 @@ const MoviesItem = ({ movie, location }) => {
           pathname: `/movies/${id}`,
           state: {
             from: location,
+            search,
           },
         }}
       >

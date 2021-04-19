@@ -1,59 +1,64 @@
-import { Component } from 'react';
+import { Component, Suspense } from 'react';
 import apiService from '../services/api-service';
-import MoviesList from '../components/MoviesList';
 import Loader from 'react-loader-spinner';
-import debounce from 'lodash.debounce';
+import { Route, Switch } from 'react-router-dom';
+import { routesQuery } from '../routes';
 import PropTypes from 'prop-types';
 
 class MoviesPage extends Component {
   state = {
-    search: '',
-    debouncedSearch: '',
+    search: this.props.location?.state?.search || '',
     movies: [],
     loading: false,
     error: null,
   };
 
-  componentDidUpdate(prevProps, prevState) {
-    const { debouncedSearch } = this.state;
-    if (prevState.debouncedSearch !== debouncedSearch && debouncedSearch) {
+  componentDidMount() {
+    const { search } = this.state;
+    if (search) {
       this.fetchMovies();
     }
   }
 
   async fetchMovies() {
     this.setState({ loading: true });
-    const { debouncedSearch } = this.state;
+    const { search } = this.state;
 
     const { results } = await apiService
-      .getFetchSearchMovie(debouncedSearch)
+      .getFetchSearchMovie(search)
       .catch(error => this.setState({ error }))
       .finally(() => this.setState({ loading: false }));
 
     this.setState({ movies: results });
   }
 
-  handleDebounceSearch = debounce(value => {
-    this.setState({ debouncedSearch: value });
-  }, 300);
-
   handleChange = event => {
     const { value } = event.currentTarget;
-
     this.setState({ search: value });
+  };
 
-    this.handleDebounceSearch(value);
+  handleSubmit = event => {
+    event.preventDefault();
+    const { search } = this.state;
+    const { history } = this.props;
+
+    search && this.fetchMovies();
+
+    history.push({
+      search: `?query=${search}`,
+    });
+
+    this.setState({ search: search });
   };
 
   render() {
     const { search, movies, loading, error } = this.state;
-
     return (
       <div className="Searchbar">
-        <div className="SearchForm">
-          <div type="submit" className="SearchForm-button">
+        <form className="SearchForm" onSubmit={this.handleSubmit}>
+          <button type="submit" className="SearchForm-button">
             <span className="SearchForm-button-label">Search</span>
-          </div>
+          </button>
 
           <input
             className="SearchForm-input"
@@ -64,17 +69,41 @@ class MoviesPage extends Component {
             autoFocus
             placeholder="Search movies"
           />
-        </div>
+        </form>
 
         <div className="SearchQuery">
           <div className="PosSpinner">
-            {loading ? (
-              <Loader type="Oval" color="#999999" height={50} width={50} />
-            ) : error ? (
-              <p>Server is not responding</p>
-            ) : (
-              <MoviesList movies={movies} />
-            )}
+            <Suspense
+              fallback={
+                <div className="PosSpinnerLoad">
+                  <Loader
+                    type="ThreeDots"
+                    color="#999999"
+                    height={50}
+                    width={150}
+                  />
+                </div>
+              }
+            >
+              <Switch>
+                {loading ? (
+                  <Loader type="Oval" color="#999999" height={50} width={50} />
+                ) : error ? (
+                  <p>Server is not responding</p>
+                ) : (
+                  routesQuery.map(({ path, exact, component: Component }) => (
+                    <Route
+                      key={path}
+                      path={`${this.props.match.path}`}
+                      exact={exact}
+                      render={props => (
+                        <Component {...props} movies={movies} search={search} />
+                      )}
+                    />
+                  ))
+                )}
+              </Switch>
+            </Suspense>
           </div>
         </div>
       </div>
@@ -84,7 +113,6 @@ class MoviesPage extends Component {
 
 MoviesPage.propTypes = {
   search: PropTypes.string,
-  debouncedSearch: PropTypes.string,
   movies: PropTypes.arrayOf(PropTypes.object),
   loading: PropTypes.bool,
   error: PropTypes.object,

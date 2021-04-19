@@ -1,44 +1,45 @@
+import { Component } from 'react';
 import { withRouter, NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { routesDetails } from '../../routes';
 
-const AdditionalInformation = ({ location, match }) => {
-  return (
-    <div className="MovieDetails_links">
-      <h4>Additional information</h4>
+class AdditionalInformation extends Component {
+  state = {
+    location: this.props.location,
+    match: this.props.match,
+    stateSearch: this.props.state,
+  };
+  render() {
+    const { location, match, stateSearch } = this.state;
 
-      <ul>
-        <li>
-          <NavLink
-            className="MovieDetails_link"
-            activeClassName="MovieDetails_link--active"
-            to={{
-              pathname: `${match.url}/cast`,
-              state: {
-                from: location,
-              },
-            }}
-          >
-            Cast
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            className="MovieDetails_link"
-            activeClassName="MovieDetails_link--active"
-            to={{
-              pathname: `${match.url}/reviews`,
-              state: {
-                from: location,
-              },
-            }}
-          >
-            Reviews
-          </NavLink>
-        </li>
-      </ul>
-    </div>
-  );
-};
+    return (
+      <div className="MovieDetails_links">
+        <h4>Additional information</h4>
+
+        <ul>
+          <li>
+            {routesDetails.map(({ path, label }) => (
+              <NavLink
+                key={label}
+                className="MovieDetails_link"
+                activeClassName="MovieDetails_link--active"
+                to={{
+                  pathname: `${match.url}${path}`,
+                  state: {
+                    from: location,
+                    search: stateSearch,
+                  },
+                }}
+              >
+                {label}
+              </NavLink>
+            ))}
+          </li>
+        </ul>
+      </div>
+    );
+  }
+}
 
 AdditionalInformation.propTypes = {
   match: PropTypes.object.isRequired,

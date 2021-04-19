@@ -1,12 +1,11 @@
-import { Component } from 'react';
+import { Component, Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import Loader from 'react-loader-spinner';
 import apiService from '../services/api-service';
-import Cast from '../components/Cast';
-import Reviews from '../components/Reviews';
 import MovieCard from '../components/MovieCard';
 import AdditionalInformation from '../components/AdditionalInformation';
 import ButtonGoBack from '../components/ButtonGoBack';
-import { routes } from '../routes';
+import { routes, routesDetails } from '../routes';
 import PropTypes from 'prop-types';
 
 class MovieDetailsPage extends Component {
@@ -18,25 +17,34 @@ class MovieDetailsPage extends Component {
     overview: null,
     loading: false,
     error: null,
+    location: '',
   };
 
   async componentDidMount() {
+    const { location } = this.props;
+    console.log(location.state.from.pathname);
+
     this.setState({ loading: true });
+
     const movieDetails = await apiService
       .getFetchDetailesMovie(this.props.match.params.movieId)
-      .then(data => data)
       .catch(error => this.setState({ error }))
       .finally(() => this.setState({ loading: false }));
 
-    this.setState({ ...movieDetails });
+    this.setState({
+      ...movieDetails,
+      location: location?.state?.from?.pathname,
+    });
   }
 
   handleGoBack = () => {
-    const { location, history } = this.props;
+    const { history } = this.props;
+    const { location } = this.state;
     const home = routes.find(route => route.label === 'Home');
-    history.push(
-      location?.state?.from?.state?.from || location?.state?.from || home.path,
-    );
+    history.push({
+      pathname: location || home.path,
+      state: this.props.location.state,
+    });
   };
 
   render() {
@@ -64,19 +72,36 @@ class MovieDetailsPage extends Component {
           loading={loading}
         />
 
-        <AdditionalInformation location={this.props} match={this.props} />
+        <AdditionalInformation
+          location={this.props}
+          match={this.props}
+          state={this.props.location.state.search}
+        />
 
         <div className="MovieDetails">
-          <Switch>
-            <Route
-              path={`${this.props.match.path}/cast`}
-              render={props => <Cast {...props} />}
-            />
-            <Route
-              path={`${this.props.match.path}/reviews`}
-              render={props => <Reviews {...props} />}
-            />
-          </Switch>
+          <Suspense
+            fallback={
+              <div className="PosSpinnerLoad">
+                <Loader
+                  type="ThreeDots"
+                  color="#999999"
+                  height={50}
+                  width={150}
+                />
+              </div>
+            }
+          >
+            <Switch>
+              {routesDetails.map(({ path, exact, component: Component }) => (
+                <Route
+                  key={path}
+                  path={`${this.props.match.path}${path}`}
+                  exact={exact}
+                  render={props => <Component {...props} />}
+                />
+              ))}
+            </Switch>
+          </Suspense>
         </div>
       </>
     );

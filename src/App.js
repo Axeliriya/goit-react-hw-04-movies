@@ -38,7 +38,7 @@ const App = () => {
                 component={Component}
               />
             ))}
-            <Route component={HomePage}></Route>
+            <Route component={HomePage} />
           </Switch>
         </Suspense>
       </Container>
