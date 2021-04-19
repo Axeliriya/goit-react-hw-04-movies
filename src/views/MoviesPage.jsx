@@ -15,9 +15,7 @@ class MoviesPage extends Component {
 
   componentDidMount() {
     const { search } = this.state;
-    if (search) {
-      this.fetchMovies();
-    }
+    search && this.fetchMovies();
   }
 
   async fetchMovies() {
