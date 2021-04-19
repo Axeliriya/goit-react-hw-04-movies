@@ -22,7 +22,6 @@ class MovieDetailsPage extends Component {
 
   async componentDidMount() {
     const { location } = this.props;
-    console.log(location.state.from.pathname);
 
     this.setState({ loading: true });
 
