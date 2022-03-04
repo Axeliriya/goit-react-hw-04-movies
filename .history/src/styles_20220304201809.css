@@ -42,12 +42,6 @@ img {
   height: auto;
 }
 
-.Container {
-  margin: 0 auto;
-  padding: 0 20px;
-  width: 1440px;
-}
-
 .grid {
   display: grid;
   min-height: 100vh;
@@ -59,6 +53,12 @@ img {
     'main'
     'footer';
   box-shadow: 0px 5px 20px rgba(157, 157, 157, 0.25);
+}
+
+.Container {
+  margin: 0 auto;
+  padding: 0 20px;
+  width: 1440px;
 }
 
 .header {
@@ -566,7 +566,6 @@ img {
   }
 
   .main {
-    width: 320px;
     padding-bottom: 40px;
   }
 
@@ -601,8 +600,16 @@ img {
   .Cast_list {
     grid-template-columns: 1fr;
   }
-  .Review_list,
+
+  .Review_list {
+    width: 238px;
+  }
+
   .Rewiews_item {
-    width: 280px;
+    width: 238px;
+  }
+
+  .Rewiew_content {
+    padding: 10px;
   }
 }

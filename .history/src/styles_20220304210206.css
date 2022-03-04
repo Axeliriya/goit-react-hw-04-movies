@@ -8,6 +8,7 @@ html {
 *::before,
 *::after {
   box-sizing: inherit;
+  outline: 1px solid red;
 }
 
 body {
@@ -603,6 +604,16 @@ img {
   }
   .Review_list,
   .Rewiews_item {
-    width: 280px;
+    width: 320px;
+  }
+
+  .Rewiew_content {
+    padding: 15px;
+    max-width: 320px;
+  }
+
+  .Rewiew_author {
+    padding: 15px;
+    max-width: 320px;
   }
 }

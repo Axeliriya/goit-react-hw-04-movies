@@ -7,7 +7,7 @@ html {
 *,
 *::before,
 *::after {
-  box-sizing: inherit;
+  box-sizing: border-box;
 }
 
 body {
@@ -566,7 +566,6 @@ img {
   }
 
   .main {
-    width: 320px;
     padding-bottom: 40px;
   }
 
@@ -601,8 +600,12 @@ img {
   .Cast_list {
     grid-template-columns: 1fr;
   }
-  .Review_list,
-  .Rewiews_item {
-    width: 280px;
+
+  .Rewiew_content {
+    padding: 15px;
+  }
+
+  .Rewiew_author {
+    padding: 15px;
   }
 }
