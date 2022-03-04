@@ -566,6 +566,7 @@ img {
   }
 
   .main {
+    /* width: 320px; */
     padding-bottom: 40px;
   }
 
@@ -600,13 +601,8 @@ img {
   .Cast_list {
     grid-template-columns: 1fr;
   }
-
-  .Review_content {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-  }
-  .Review_list,
+  /* .Review_list,
   .Rewiews_item {
     width: 280px;
-  }
+  } */
 }

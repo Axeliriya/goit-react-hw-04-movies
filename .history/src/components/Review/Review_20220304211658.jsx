@@ -9,10 +9,7 @@ const Review = ({ review }) => {
           {created_at.slice(8, 10)}.{created_at.slice(5, 7)}.
           {created_at.slice(0, 4)} {created_at.slice(11, 19)}
         </p>
-        <div
-          className="Review_content"
-          dangerouslySetInnerHTML={{ __html: content }}
-        />
+        <p className="Review_content">{content}</p>
       </div>
       <div className="Rewiew_author">
         <span>Author: {author}</span>
